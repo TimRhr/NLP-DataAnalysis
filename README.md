@@ -103,34 +103,6 @@ Ablauf:
 5. Euklidische Distanzen zwischen Dokumenten berechnen.
 6. Semantische Analyse mit LSA und LDA durchführen.
 
-Beispielausgabe:
-
-            Word  BoW    TF-IDF
-payment  payment    6  0.449771
-issue      issue    5  0.463652
-report    report    4  0.195095
-...
-
-BoW Euclidean distances (first 5 docs):
-           Doc0       Doc1       Doc2       Doc3       Doc4
-Doc0   0.000000  16.278821  16.792856  16.340135  15.842980
-Doc1  16.278821   0.000000  15.779734  15.491933  14.966630
-...
-
-TF-IDF Euclidean distances (first 5 docs):
-          Doc0      Doc1      Doc2      Doc3      Doc4
-Doc0  0.000000  1.279001  1.301569  1.252626  1.242231
-Doc1  1.279001  0.000000  1.161487  1.228888  1.216835
-...
-
---- LSA Topics ---
-Topic 1 (account): account (6.2%), credit (5.6%), report (5.3%), ...
-...
-
---- LDA Topics ---
-Topic 1 (card): card (5.6%), call (5.3%), account (4.6%), ...
-...
-
 ## 🧠 Interpretation
 
 - LSA findet latente Strukturen, kann aber negative Werte in den Gewichtungen erzeugen, was die Interpretation erschwert.

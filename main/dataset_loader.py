@@ -15,6 +15,7 @@ def download_dataset():
         raise ValueError("KAGGLE_USERNAME or KAGGLE_KEY not set in .env file")
 
     download_folder = "data/raw"
+    os.makedirs(download_folder, exist_ok=True)
     today = datetime.date.today().isoformat()
 
     file_path = os.path.join(download_folder, f"Consumer_Complaints_{today}.csv")

@@ -5,6 +5,9 @@ import pandas as pd
 from sklearn.metrics import pairwise_distances
 
 def get_latest_dataset(raw_dir, pattern="Consumer_Complaints*.csv"):
+    if not os.path.exists(raw_dir):
+        os.makedirs(raw_dir, exist_ok=True)
+    
     date_re = re.compile(r"(\d{4}-\d{2}-\d{2})")
     files = glob(os.path.join(raw_dir, pattern))
     
@@ -19,6 +22,7 @@ def get_latest_dataset(raw_dir, pattern="Consumer_Complaints*.csv"):
 
 def load_or_preprocess(preprocessor, dataset_file, cleaned_dir, max_rows=0, column_name="narrative"):
     # Load or preprocess the dataset
+    os.makedirs(cleaned_dir, exist_ok=True)
     base_name = os.path.basename(dataset_file)
     name_without_ext = os.path.splitext(base_name)[0]
     cleaned_file = os.path.join(cleaned_dir, f"Cleaned_{name_without_ext}.pkl")

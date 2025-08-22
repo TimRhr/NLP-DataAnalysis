@@ -14,12 +14,20 @@ cd NLP-DataAnalysis
 ```
 
 ### 2. Virtuelle Umgebung erstellen & aktivieren
+```bash
 python -m venv .venv
+```
+```bash
 source .venv/bin/activate   # Linux / macOS
+```
+```bash
 .venv\Scripts\activate      # Windows
+```
 
 ### 3. Abhängigkeiten installieren
+```bash
 pip install -r requirements.txt
+```
 
 ### 4. Analysen starten
 run.py ausführen, um:

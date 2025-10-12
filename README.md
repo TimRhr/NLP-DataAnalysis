@@ -101,13 +101,21 @@ Ablauf:
 3. BoW und TF-IDF Vektorisierungen erstellen.
 4. Vergleich der Features zwischen BoW und TF-IDF für ein Dokument (COMPARE_DOC_IDX).
 5. Euklidische Distanzen zwischen Dokumenten berechnen.
-6. Semantische Analyse mit LSA und LDA durchführen.
+6. Semantische Analyse mit LSA und LDA zur Extraktion der Themen im Korpus.
 
 ## 🧠 Interpretation
 
-- LSA findet latente Strukturen, kann aber negative Werte in den Gewichtungen erzeugen, was die Interpretation erschwert.
+- BoW vs TF-IDF:
+    - BoW zeigt absolute Worthäufigkeiten, TF-IDF hebt kontextuell relevante Wörter hervor.
+    - Ein Wort mit hoher BoW, aber niedrigem TF-IDF → häufig, aber wenig aussagekräftig.
+    - Ein Wort mit niedriger BoW, aber hohem TF-IDF → selten, aber charakteristisch für das Dokument.
 
-- LDA liefert klarere, probabilistische Themen mit gut interpretierbaren Verteilungen.
+- Dokumentenähnlichkeit:
+    - Niedrige Distanzen → Dokumente inhaltlich ähnlich.
+    - Hohe Distanzen → unterschiedliche Themen oder Fokus.
 
-- Beide Methoden identifizieren ähnliche Kernthemen:
-    - account, credit, consumer, payment, debt
+- Themenanalyse:
+    - LSA: Zeigt Muster und Zusammenhänge zwischen Wörtern, eher latente Strukturen. Negative Werte reflektieren Gegensätze oder Abwesenheit im Thema.
+    - LDA: Liefert klare, probabilistische Themen. Werte geben die relative Bedeutung jedes Wortes im Thema an.
+
+- Coherence Scores: Helfen bei der Beurteilung, ob die extrahierten Themen sinnvoll und inhaltlich konsistent sind.

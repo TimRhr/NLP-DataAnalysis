@@ -3,6 +3,10 @@ from glob import glob
 from datetime import datetime
 import pandas as pd
 from sklearn.metrics import pairwise_distances
+import matplotlib.pyplot as plt
+from gensim.corpora import Dictionary
+from gensim.models import LdaModel, CoherenceModel
+from tqdm import tqdm
 
 def get_latest_dataset(raw_dir, pattern="Consumer_Complaints*.csv"):
     if not os.path.exists(raw_dir):
@@ -72,3 +76,60 @@ def compute_euclidean_distances(X_bow, X_tfidf, n_docs=5):
     df_dist_tfidf = pd.DataFrame(dist_tfidf, columns=[f"Doc{i}" for i in range(n_docs)], index=[f"Doc{i}" for i in range(n_docs)])
     
     return df_dist_bow, df_dist_tfidf
+
+def find_optimal_lda_model(tokenized_docs, min_topics=2, max_topics=15, step=1, passes=10, random_state=42):
+    # Optimize LDA model by varying number of topics and evaluating coherence score
+    print("\n=== Starte Optimierung der Topic-Anzahl anhand des Coherence Scores ===")
+
+    dictionary = Dictionary(tokenized_docs)
+    corpus = [dictionary.doc2bow(text) for text in tokenized_docs]
+
+    results = []
+    best_model = None
+    best_score = float('-inf')
+    best_num_topics = None
+
+    # test different numbers of topics
+    for num_topics in tqdm(range(min_topics, max_topics + 1, step), desc="LDA Modelle"):
+        model = LdaModel(
+            corpus=corpus,
+            id2word=dictionary,
+            num_topics=num_topics,
+            random_state=random_state,
+            passes=passes,
+            alpha='auto',
+            eta='auto'
+        )
+
+        # calculate coherence score
+        cm = CoherenceModel(
+            model=model,
+            texts=tokenized_docs,
+            corpus=corpus,
+            dictionary=dictionary,
+            coherence='c_v'
+        )
+        coherence = cm.get_coherence()
+        results.append((num_topics, coherence))
+
+        print(f"→ {num_topics:2d} Topics | Coherence Score (c_v): {coherence:.4f}")
+
+        if coherence > best_score:
+            best_score = coherence
+            best_model = model
+            best_num_topics = num_topics
+
+    # plot results
+    x, y = zip(*results)
+    plt.figure(figsize=(8, 5))
+    plt.plot(x, y, marker='o')
+    plt.title("LDA Topic Optimization (Coherence Score)")
+    plt.xlabel("Anzahl der Topics")
+    plt.ylabel("Coherence Score (c_v)")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+    print(f"\nBestes Modell: {best_num_topics} Topics mit Coherence Score {best_score:.4f}")
+
+    return best_model, best_num_topics, results

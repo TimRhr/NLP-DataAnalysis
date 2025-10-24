@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 from gensim.corpora import Dictionary
 from gensim.models import LdaModel, CoherenceModel
 from tqdm import tqdm
+import pyLDAvis
+import pyLDAvis.gensim_models as gensimvis
 
 def get_latest_dataset(raw_dir, pattern="Consumer_Complaints*.csv"):
     if not os.path.exists(raw_dir):
@@ -133,3 +135,11 @@ def find_optimal_lda_model(tokenized_docs, min_topics=2, max_topics=15, step=1, 
     print(f"\nBestes Modell: {best_num_topics} Topics mit Coherence Score {best_score:.4f}")
 
     return best_model, best_num_topics, results
+
+def visualize_lda_model(lda_model, corpus, dictionary, output_html="lda_visualization.html"):
+    # creates an interactive LDA visualization and saves it as an HTML file
+    print("\n=== LDA-Visualisierung ===")
+    vis_data = gensimvis.prepare(lda_model, corpus, dictionary)
+    pyLDAvis.save_html(vis_data, output_html)
+    print(f"Visualisierung gespeichert unter: {output_html}")
+    return vis_data

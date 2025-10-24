@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 from gensim.models import CoherenceModel
 from gensim.corpora import Dictionary
+from main.utils import visualize_lda_model
 
 from main.utils import find_optimal_lda_model
 
@@ -71,11 +72,14 @@ class LDAAnalyzer:
         self.n_topics = best_num_topics
 
         print(f"\nBestes Modell übernommen: {best_num_topics} Topics mit maximaler Kohärenz.")
+        
+        # visualize the LDA model
+        try:
+            visualize_lda_model(self.model, self.corpus, self.dictionary)
+        except Exception as e:
+            print(f"LDA-Visualisierung konnte nicht erstellt werden: {e}")
 
     def get_topics(self):
-        if self.model is None:
-            raise ValueError("Modell nicht trainiert. Rufe zuerst .fit() auf.")
-        
         topics = []
         for idx in range(self.n_topics):
             top_words = self.model.show_topic(idx, topn=self.top_n_words)

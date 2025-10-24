@@ -95,3 +95,4 @@ webencodings==0.5.1
 wrapt==1.17.3
 xxhash==3.5.0
 yarl==1.20.1
+pyLDAvis==3.4.1
